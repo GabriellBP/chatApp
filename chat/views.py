@@ -1,5 +1,7 @@
+from django.contrib.auth import authenticate, login  # Django's inbuilt authentication methods
 from django.contrib.auth.models import User
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, HttpResponse
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from chat.models import Message
@@ -45,3 +47,19 @@ def message_list(request, sender=None, receiver=None):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+# Login page
+def index(request):
+    # if request.user.is_authenticated:  # If the user is authenticated then redirect to the chat console
+    #     return redirect('chats')
+    if request.method == 'GET':
+        return render(request, 'chat/index.html', {})
+    if request.method == "POST":  # Authentication of user
+        username, password = request.POST['username'], request.POST['password']  # Retrieving username and password from the POST data.
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            login(request, user)
+        else:
+            return HttpResponse('{"error": "User does not exist"}')
+        return redirect('chats')
