@@ -9,6 +9,9 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     # URL to chat listing users
     path('chat', views.chat_view, name='chats'),
+    # URL to send and receive messages
+    path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),
+
     # API:
     # URL form : "/api/messages/1/2"
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),  # For GET request.

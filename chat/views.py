@@ -82,3 +82,19 @@ def chat_view(request):
     if request.method == "GET":
         return render(request, 'chat/chat.html',
                       {'users': User.objects.exclude(username=request.user.username)})  # Returning context for all users except the current logged-in user
+
+
+# View to render template for sending and receiving messages
+#Takes arguments 'sender' and 'receiver' to identify the message list to return
+def message_view(request, sender, receiver):
+    """
+    Render the template with required context variables
+    """
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.method == "GET":
+        return render(request, "chat/messages.html",
+                      {'users': User.objects.exclude(username=request.user.username), #List of users
+                       'receiver': User.objects.get(id=receiver), # Receiver context user object for using in template
+                       'messages': Message.objects.filter(sender_id=sender, receiver_id=receiver) |
+                                   Message.objects.filter(sender_id=receiver, receiver_id=sender)}) # Return context with message objects where users are either sender or receiver.
