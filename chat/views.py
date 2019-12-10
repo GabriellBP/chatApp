@@ -63,3 +63,10 @@ def index(request):
         else:
             return HttpResponse('{"error": "User does not exist"}')
         return redirect('chats')
+
+
+# Simply render the template
+def register_view(request):
+    if request.user.is_authenticated:
+        return redirect('index')
+    return render(request, 'chat/register.html', {})
