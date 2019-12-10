@@ -1,10 +1,21 @@
 // My JavaScript page
 
 /* We define a variable 'text_box' for storing the html code structure of message that is displayed in the chat box. */
-let text_box = '<div class="card-panel right" style="width: 75%; position: relative">' +
+const text_box = '<div class="card-panel right" style="width: 75%; position: relative">' +
     '<div style="position: absolute; top: 0; left:3px; font-weight: bolder" class="title">{sender}</div>' +
     '{message}' +
     '</div>';
+
+let userState = '';
+
+const userDiv = (senderId, receiverId, name, online) =>
+    (`<a href="/chat/${senderId}/${receiverId}" id="user${receiverId}" class="collection-item row">
+                    <img src="https://frontend-1.adjust.com/new-assets/images/site-images/interface/user.svg" class="col s2">
+                    <div class="col s10">
+                    <span class="title" style="font-weight: bolder">${name}</span>
+                    <span style="color: ${online ? 'green' : 'red'}; float: right">${online ? 'online' : 'offline'}</span>
+                    </div>
+                </a>`)
 
 /* Send takes three args: sender, receiver, message. sender & receiver are ids of users, and message is the text to be sent. */
 function send(sender, receiver, message) {
@@ -53,4 +64,21 @@ function scrolltoend() {
     $('#board').stop().animate({
         scrollTop: $('#board')[0].scrollHeight
     }, 800);
+}
+
+
+function getUsers(senderId, callback) {
+    return $.get('/api/users', function (data) {
+        if (userState !== JSON.stringify(data)) {
+            userState = JSON.stringify(data);
+            const doc = data.reduce((res, user) => {
+                if (user.id === senderId) {
+                    return res
+                } else {
+                    return [userDiv(senderId, user.id, user.username, user.online), ...res]
+                }
+            }, []);
+            callback(doc)
+        }
+    })
 }

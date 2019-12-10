@@ -6,10 +6,11 @@ from chat.models import Message
 # User Serializer
 class UserSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    online = serializers.ReadOnlyField(source='userprofile.online')
 
     class Meta:
         model = User
-        fields = ['username', 'password']
+        fields = ['id', 'username', 'password', 'online']
 
 
 # Message Serializer
