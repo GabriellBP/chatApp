@@ -2,10 +2,14 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    # WEB
     # URL to index (login)
     path('', views.index, name='index'),
     # URL to register
     path('register/', views.register_view, name='register'),
+    # URL to chat listing users
+    path('chat', views.chat_view, name='chats'),
+    # API:
     # URL form : "/api/messages/1/2"
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),  # For GET request.
     # URL form : "/api/messages/"

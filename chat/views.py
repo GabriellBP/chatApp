@@ -70,3 +70,15 @@ def register_view(request):
     if request.user.is_authenticated:
         return redirect('index')
     return render(request, 'chat/register.html', {})
+
+
+# View for listing the users
+def chat_view(request):
+    """
+    Render the template with required context variables
+    """
+    if not request.user.is_authenticated:
+        return redirect('index')
+    if request.method == "GET":
+        return render(request, 'chat/chat.html',
+                      {'users': User.objects.exclude(username=request.user.username)})  # Returning context for all users except the current logged-in user
