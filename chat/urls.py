@@ -1,3 +1,4 @@
+from django.contrib.auth import logout
 from django.urls import path
 from . import views
 
@@ -6,11 +7,13 @@ urlpatterns = [
     # URL to index (login)
     path('', views.index, name='index'),
     # URL to register
-    path('register/', views.register_view, name='register'),
+    path('register', views.register_view, name='register'),
     # URL to chat listing users
     path('chat', views.chat_view, name='chats'),
     # URL to send and receive messages
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),
+    # URL to logout
+    path('logout', logout, {'next_page': 'index'}, name='logout'),
 
     # API:
     # URL form : "/api/messages/1/2"
