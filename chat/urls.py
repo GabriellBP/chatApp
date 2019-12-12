@@ -1,4 +1,4 @@
-from django.contrib.auth import logout
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from . import views
 
@@ -7,13 +7,16 @@ urlpatterns = [
     # URL to index (login)
     path('', views.index, name='index'),
     # URL to register
-    path('register/', views.register_view, name='register'),
+    path('register', views.register_view, name='register'),
+    # URL to logout
+    path('logout', LogoutView.as_view(next_page='index'), name='logout'),
     # URL to chat listing users
     path('chat', views.chat_view, name='chats'),
+    # URL to see chat messages
+    path('chat/<int:sender>/<int:receiver>', views.message_view, name='chat'),
     # URL to send and receive messages
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),
-    # URL to logout
-    path('logout', logout, {'next_page': 'index'}, name='logout'),
+
 
     # API:
     # URL form : "/api/messages/1/2"
@@ -23,5 +26,5 @@ urlpatterns = [
     # URL form "/api/users/1"
     path('api/users/<int:pk>', views.user_list, name='user-detail'),      # GET request for user with id
     # URL form "/api/users/"
-    path('api/users/', views.user_list, name='user-list'),    # POST for new user and GET for all users list
+    path('api/users', views.user_list, name='user-list'),    # POST for new user and GET for all users list
 ]

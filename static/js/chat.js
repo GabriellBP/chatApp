@@ -21,7 +21,6 @@ const userDiv = (senderId, receiverId, name, online) =>
 function send(sender, receiver, message) {
     //POST to '/api/messages', the data in JSON string format
     $.post('/api/messages', '{"sender": "'+ sender +'", "receiver": "'+ receiver +'","message": "'+ message +'" }', function (data) {
-        console.log(data);
         var box = text_box.replace('{sender}', "You"); // Replace the text '{sender}' with 'You'
         box = box.replace('{message}', message); // Replace the text '{message}' with the message that has been sent.
         $('#board').append(box); // Render the message inside the chat-box by appending it at the end.
@@ -32,11 +31,10 @@ function send(sender, receiver, message) {
 /* Receive function sends a GET request to '/api/messages/<sender_id>/<receiver_id>' to get the list of messages. */
 function receive() {
     // 'sender_id' and 'receiver_id' are global variables declared in the messages.html, which contains the ids of the users.
-    $.get('/api/messages/'+ sender_id + '/' + receiver_id, function (data) {
+    $.get('/api/messages/' + sender_id + '/' + receiver_id, function (data) {
         console.log(data);
-        if (data.length !== 0)
-        {
-            for(var i=0;i<data.length;i++) {
+        if (data.length !== 0) {
+            for (var i = 0; i < data.length; i++) {
                 console.log(data[i]);
                 var box = text_box.replace('{sender}', data[i].sender);
                 box = box.replace('{message}', data[i].message);
