@@ -51,7 +51,7 @@ function receive() {
 /* Register function takes two arguments: username and password, for creating the user. */
 function register(username, password) {
      // Post to '/api/users' for creating a user, the data in JSON string format.
-    $.post('/api/users', '{"username": "'+ username +'", "password": "'+ password +'"}',
+    $.post('/api/users/', '{"username": "'+ username +'", "password": "'+ password +'"}',
         function (data) {
             window.location = '/';  // Redirect to login page if success
         }).fail(function (response) {

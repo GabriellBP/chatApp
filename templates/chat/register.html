@@ -7,24 +7,27 @@
         {% csrf_token %}
         <div class="row">
             <div class="input-field col s12">
-                <input name="username" id="id_username" type="text" class="validate">
+                <input name="username" id="id_username" type="text" class="validate" required>
                 <label for="id_username" data-error="Username already taken">Username</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input name="password" id="id_password" type="password">
+                <input name="password" id="id_password" type="password" required>
                 <label for="id_password">Password</label>
             </div>
         </div>
         <div class="row">
             <div class="input-field col s12">
-                <input name="password2" id="id_password2" type="password">
+                <input name="password2" id="id_password2" type="password" required>
                 <label for="id_password2">Repeat Password</label>
             </div>
         </div>
         <div class="row">
-            <div class="col s12">
+            <div class="col s8">
+                <a href="{% url 'index' %}">Login</a>
+            </div>
+            <div class="col s4">
             <div class="right">
                 <button class="btn blue waves-effect waves-light pull-s12">Register</button>
             </div>
@@ -46,8 +49,6 @@
                     alert("The passwords doesn't match!");
                 }
             }
-            else
-                alert("Please enter a valid username!");
         })
     })
     </script>
