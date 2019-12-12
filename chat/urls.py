@@ -7,7 +7,7 @@ urlpatterns = [
     # URL to index (login)
     path('', views.index, name='index'),
     # URL to register
-    path('register', views.register_view, name='register'),
+    path('register/', views.register_view, name='register'),
     # URL to logout
     path('logout', LogoutView.as_view(next_page='index'), name='logout'),
     # URL to chat listing users
@@ -26,5 +26,5 @@ urlpatterns = [
     # URL form "/api/users/1"
     path('api/users/<int:pk>', views.user_list, name='user-detail'),      # GET request for user with id
     # URL form "/api/users/"
-    path('api/users', views.user_list, name='user-list'),    # POST for new user and GET for all users list
+    path('api/users/', views.user_list, name='user-list'),    # POST for new user and GET for all users list
 ]

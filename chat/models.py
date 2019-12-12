@@ -26,11 +26,16 @@ class UserProfile(models.Model):
         return self.user.username
 
     def last_seen(self):
+        print('Modell: last_seen_%s' % self.user.username)
+        print(cache.get('last_seen_%s' % self.user.username))
         return cache.get('last_seen_%s' % self.user.username)
 
     def online(self):
         if self.last_seen():
             now = datetime.datetime.now()
+            print(now)
+            print(self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT))
+            print(now > (self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT)))
             if now > (self.last_seen() + datetime.timedelta(seconds=settings.USER_ONLINE_TIMEOUT)):
                 return False
             else:
