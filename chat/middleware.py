@@ -19,12 +19,8 @@ class ActiveUserMiddleware:
             except UserProfile.DoesNotExist:
                 UserProfile.objects.create(user=current_user)
             finally:
-                variable = cache.set('last_seen_%s' % current_user.username, now,
+                cache.set('last_seen_%s' % current_user.username, now,
                         settings.USER_LASTSEEN_TIMEOUT)
-                print(variable)
-                print('--------------------------------.-.-')
-                print('----------->', current_user.username)
-                print('----------->>', cache.get('last_seen_%s' % current_user.username))
 
         response = self.get_response(request)
         return response
