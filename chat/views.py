@@ -4,7 +4,7 @@ from django.http.response import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from chat.models import Message
+from chat.models import Message, UserProfile
 from chat.serializers import MessageSerializer, UserSerializer
 
 
@@ -12,7 +12,7 @@ from chat.serializers import MessageSerializer, UserSerializer
 @csrf_exempt  # Make the view csrf exempt.
 def user_list(request, pk=None):
     """
-    List all required messages, or create a new message.
+    List all users, an unique user or create a new one.
     """
     if request.method == 'GET':
         if pk:  # If PrimaryKey (id) of the user is specified in the url
@@ -23,11 +23,17 @@ def user_list(request, pk=None):
         return JsonResponse(serializer.data, safe=False)  # Return serialized data
     elif request.method == 'POST':
         data = JSONParser().parse(request)  # On POST, parse the request object to obtain the data in json
-        serializer = UserSerializer(data=data)  # Serialize the data
-        if serializer.is_valid():
-            serializer.save()  # Save it if valid
-            return JsonResponse(serializer.data, status=201)  # Return back the data on success
-        return JsonResponse(serializer.errors, status=400)  # Return back the errors  if not valid
+        try:
+            # serializer = UserSerializer(data=data)  # Serialize the data
+            # if serializer.is_valid():
+            #     serializer.save()  # Save it if valid
+            # return JsonResponse(serializer.data, status=201)  # Return back the data on success
+            # return JsonResponse(serializer.errors, status=400)  # Return back the errors  if not valid
+            user = User.objects.create_user(username=data['username'], password=data['password'])
+            UserProfile.objects.create(user=user)
+            return JsonResponse(data, status=201)
+        except Exception:
+            return JsonResponse({'error': "Something went wrong"}, status=400)
 
 
 # Message view
@@ -37,8 +43,11 @@ def message_list(request, sender=None, receiver=None):
     List all required messages, or create a new message.
     """
     if request.method == 'GET':
-        messages = Message.objects.filter(sender_id=sender, receiver_id=receiver)
+        messages = Message.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
         serializer = MessageSerializer(messages, many=True, context={'request': request})
+        for message in messages:
+            message.is_read = True
+            message.save()
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
@@ -51,8 +60,8 @@ def message_list(request, sender=None, receiver=None):
 
 # Login page
 def index(request):
-    # if request.user.is_authenticated:  # If the user is authenticated then redirect to the chat console
-    #     return redirect('chats')
+    if request.user.is_authenticated:  # If the user is authenticated then redirect to the chat console
+        return redirect('chats')
     if request.method == 'GET':
         return render(request, 'chat/index.html', {})
     if request.method == "POST":  # Authentication of user
@@ -68,8 +77,11 @@ def index(request):
 
 # Simply render the template
 def register_view(request):
+    """
+    Render registration template
+    """
     if request.user.is_authenticated:
-        return redirect('index')
+        return redirect('chats')
     return render(request, 'chat/register.html', {})
 
 

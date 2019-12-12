@@ -56,18 +56,16 @@
                 var message = $('#id_message');
                 send('{{ request.user.username }}', '{{ receiver.username }}', message.val());
                 message.val('');
-            })
+            });
             setInterval(() => {
                 getUsers({{ request.user.id }}, doc => {
-                    let list = ''
+                    let list = '';
                     doc.map(userItem => {
                         list += userItem
-                    })
+                    });
                     $('#users').html(list)
                 });
             }, 1000)
-        })        
-
-        
+        })
     </script>
 {% endblock %}
