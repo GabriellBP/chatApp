@@ -16,7 +16,7 @@ SECURE_HSTS_PRELOAD = True
 DEBUG = False
 
 # HOST
-ALLOWED_HOSTS = ['mathema-api.herokuapp.com']
+ALLOWED_HOSTS = ['chat-shopkeeper-customer.herokuapp.com']
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
