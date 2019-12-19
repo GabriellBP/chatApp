@@ -65,18 +65,19 @@ function scrolltoend() {
 
 
 function getUsers(senderId, callback) {
-    return $.get('/api/users', function (data) {
+    return $.get('/api/users/'+senderId, function (senderData) {
+      return $.get('/api/users', function (data) {
         if (userState !== JSON.stringify(data)) {
             userState = JSON.stringify(data);
             const doc = data.reduce((res, user) => {
-                console.log(user);
-                if (user.id === senderId) {
-                    return res
+                if (user.id === senderId || senderData[0].is_customer === user.is_customer) {
+                    return res;
                 } else {
-                    return [userDiv(senderId, user.id, user.username, user.online), ...res]
+                    return [userDiv(senderId, user.id, user.username, user.online), ...res];
                 }
             }, []);
             callback(doc)
         }
-    })
+      })
+    });
 }
