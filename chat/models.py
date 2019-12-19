@@ -19,8 +19,19 @@ class Message(models.Model):
         ordering = ('timestamp',)
 
 
+def set_customer():
+    qtt_is_customer = len(UserProfile.objects.filter(is_customer=True))
+    qtt_is_not_customer = len(UserProfile.objects.filter(is_customer=False))
+    print(qtt_is_customer, qtt_is_not_customer)
+    if qtt_is_customer <= qtt_is_not_customer:
+        return True
+    else:
+        return False
+
+
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    is_customer = models.BooleanField(default=set_customer, null=False)
 
     def __str__(self):
         return self.user.username
@@ -37,3 +48,6 @@ class UserProfile(models.Model):
                 return True
         else:
             return False
+
+    def verify_customer(self):
+        return self.is_customer
