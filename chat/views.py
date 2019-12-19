@@ -94,8 +94,11 @@ def chat_view(request):
         return redirect('index')
     if request.method == "GET":
         return render(request, 'chat/chat.html',
-                      {'users': User.objects.exclude(
-                          username=request.user.username)})  # Returning context for all users except the current logged-in user
+                      {
+                          'users': User.objects.exclude(
+                          username=request.user.username),
+                          'is_customer': UserProfile.objects.get(user=User.objects.get(id=request.user.id)).is_customer
+                      })  # Returning context for all users except the current logged-in user
 
 
 # View to render template for sending and receiving messages
