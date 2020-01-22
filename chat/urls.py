@@ -14,11 +14,11 @@ urlpatterns = [
     path('chat', views.chat_view, name='chats'),
     # URL to see chat messages
     path('chat/<int:sender>/<int:receiver>', views.message_view, name='chat'),
-    # URL to send and receive messages
-    path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),
 
 
     # API:
+    # URL to send and receive messages
+    path('api/messages/<int:receiver>', views.message_list, name='message-detail'),
     # URL form : "/api/messages/1/2"
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),  # For GET request.
     # URL form : "/api/messages/"

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from chat.models import Message, UserProfile
-from chat.serializers import MessageSerializer, UserSerializer
+from chat.serializers import MessageSerializer, UserSerializer, CheckMessageSerializer
 
 
 # Users View
@@ -43,8 +43,12 @@ def message_list(request, sender=None, receiver=None):
     List all required messages, or create a new message.
     """
     if request.method == 'GET':
-        messages = Message.objects.filter(sender_id=sender, receiver_id=receiver, is_read=False)
-        serializer = MessageSerializer(messages, many=True, context={'request': request})
+        if sender is None:
+            messages = Message.objects.filter(receiver_id=receiver, is_read=False)
+            serializer = CheckMessageSerializer(messages, many=True, context={'request': request})
+        else:
+            messages = Message.objects.filter(receiver_id=receiver, sender_id=sender, is_read=False)
+            serializer = MessageSerializer(messages, many=True, context={'request': request})
         for message in messages:
             message.is_read = True
             message.save()
@@ -96,7 +100,7 @@ def chat_view(request):
         return render(request, 'chat/chat.html',
                       {
                           'users': User.objects.exclude(
-                          username=request.user.username),
+                              username=request.user.username),
                           'is_customer': UserProfile.objects.get(user=User.objects.get(id=request.user.id)).is_customer
                       })  # Returning context for all users except the current logged-in user
 
@@ -107,7 +111,7 @@ def message_view(request, sender, receiver):
     """
     Render the template with required context variables
     """
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated or (request.user.id != sender and request.user.id != receiver):
         return redirect('index')
     if request.method == "GET":
         return render(request, "chat/messages.html",

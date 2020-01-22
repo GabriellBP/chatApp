@@ -37,7 +37,7 @@ MIDDLEWARE = [
     'chat.middleware.ActiveUserMiddleware',
 ]
 
-#To make the registration app work, is required for the django.contrib.sites dependency
+# To make the registration app work, is required for the django.contrib.sites dependency
 SITE_ID = 1
 
 ROOT_URLCONF = 'chatApp.urls'

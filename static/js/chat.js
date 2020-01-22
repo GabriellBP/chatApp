@@ -34,7 +34,6 @@ function receive() {
     $.get('/api/messages/' + sender_id + '/' + receiver_id, function (data) {
         if (data.length !== 0) {
             for (var i = 0; i < data.length; i++) {
-                console.log(data[i]);
                 var box = text_box.replace('{sender}', data[i].sender);
                 box = box.replace('{message}', data[i].message);
                 box = box.replace('right', 'left blue lighten-5');
@@ -42,7 +41,7 @@ function receive() {
                 scrolltoend();
             }
         }
-    })
+    });
 }
 
 /* Register function takes two arguments: username and password, for creating the user. */
@@ -78,6 +77,25 @@ function getUsers(senderId, callback) {
             }, []);
             callback(doc)
         }
-      })
+      });
     });
 }
+
+function waitShopkeeper() {
+    return `<a href="#" class="collection-item row">
+                    <div class="col s12" style="text-align: center;">
+                    <span class="title" style="font-weight: bolder;">Waiting shopkeeper</span>
+                    </div>
+                </a>`;
+}
+
+function checkNewMessage() {
+    $.get('/api/messages/' + receiver_id, function (data) {
+        if (data.length !== 0) {
+            window.location.href = '/chat/' + data[0].sender + '/' + data[0].receiver
+            // $.get('/chat/' + data[0].sender + '/' + data[0].receiver);
+        }
+    });
+}
+
+// /chat/${senderId}/${receiverId}

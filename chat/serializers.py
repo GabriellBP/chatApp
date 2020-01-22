@@ -22,3 +22,12 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['sender', 'receiver', 'message', 'timestamp']
+
+
+class CheckMessageSerializer(serializers.ModelSerializer):
+    sender = serializers.SlugRelatedField(many=False, slug_field='id', queryset=User.objects.all())
+    receiver = serializers.SlugRelatedField(many=False, slug_field='id', queryset=User.objects.all())
+
+    class Meta:
+        model = Message
+        fields = ['sender', 'receiver', 'message', 'timestamp']

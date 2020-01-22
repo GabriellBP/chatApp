@@ -57,6 +57,7 @@
         // For receiving
         sender_id = "{{ receiver.id }}";
         receiver_id = "{{ request.user.id }}";
+        is_customer = "{{ is_customer }}";
 
         //For sending
         $(function () {
@@ -67,15 +68,21 @@
                 send('{{ request.user.username }}', '{{ receiver.username }}', message.val());
                 message.val('');
             });
+
             setInterval(() => {
-                getUsers({{ request.user.id }}, doc => {
-                    let list = '';
-                    doc.map(userItem => {
-                        list += userItem
+                if ( is_customer !== 'True') {
+                    getUsers({{ request.user.id }}, doc => {
+                        let list = '';
+                        doc.map(userItem => {
+                            list += userItem
+                        });
+                        $('#users').html(list);
                     });
-                    $('#users').html(list);
-                });
-            }, 1000)
+                } else {
+                    $('#users').html(waitShopkeeper());
+                    checkNewMessage();
+                }
+            }, 1000);
         })
     </script>
 {% endblock %}
