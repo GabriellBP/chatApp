@@ -43,15 +43,19 @@ def message_list(request, sender=None, receiver=None):
     List all required messages, or create a new message.
     """
     if request.method == 'GET':
-        if sender is None:
-            messages = Message.objects.filter(receiver_id=receiver, is_read=False)
-            serializer = CheckMessageSerializer(messages, many=True, context={'request': request})
+        if sender is None and receiver is None:
+            message = Message.objects.latest('timestamp')
+            serializer = CheckMessageSerializer(message, many=False, context={'request': request})
         else:
-            messages = Message.objects.filter(receiver_id=receiver, sender_id=sender, is_read=False)
-            serializer = MessageSerializer(messages, many=True, context={'request': request})
-        for message in messages:
-            message.is_read = True
-            message.save()
+            if sender is None:
+                messages = Message.objects.filter(receiver_id=receiver, is_read=False)
+                serializer = CheckMessageSerializer(messages, many=True, context={'request': request})
+            else:
+                messages = Message.objects.filter(receiver_id=receiver, sender_id=sender, is_read=False)
+                serializer = MessageSerializer(messages, many=True, context={'request': request})
+            for message in messages:
+                message.is_read = True
+                message.save()
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)

@@ -44,6 +44,23 @@ function receive() {
     });
 }
 
+function checkLastMessage() {
+    let inputMessage = $('#id_message');
+    $.get('/api/messages/', function (data) {
+       if (data.length !== 0) {
+            if (data.sender === parseInt(receiver_id)) {
+                if (!inputMessage.is(':disabled')) {
+                    inputMessage.prop('disabled', true);;
+                }
+            } else {
+                if (inputMessage.is(':disabled')) {
+                    inputMessage.prop('disabled', false);
+                }
+            }
+       }
+    });
+}
+
 /* Register function takes two arguments: username and password, for creating the user. */
 function register(username, password) {
      // Post to '/api/users' for creating a user, the data in JSON string format.

@@ -17,12 +17,12 @@ urlpatterns = [
 
 
     # API:
-    # URL to send and receive messages
+    # URL form : "/api/messages/1" - URL to check if there are new messagens from shopkeeper
     path('api/messages/<int:receiver>', views.message_list, name='message-check'),
-    # URL form : "/api/messages/1/2"
+    # URL form : "/api/messages/1/2" - URL to send and receive messages
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),  # For GET request.
-    # URL form : "/api/messages/"
-    path('api/messages/', views.message_list, name='message-list'),   # For POST
+    # URL form : "/api/messages/" - For POST or to get last message sender id
+    path('api/messages/', views.message_list, name='message-list'),
     # URL form "/api/users/1"
     path('api/users/<int:pk>', views.user_list, name='user-detail'),      # GET request for user with id
     # URL form "/api/users/"
