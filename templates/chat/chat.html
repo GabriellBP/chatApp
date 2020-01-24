@@ -88,9 +88,16 @@
                         });
                         $('#users').html(list);
                     });
-                } else {
-                    $('#users').html(waitShopkeeper());
-                    checkNewMessage();
+                } else { // is customer
+                    if (sender_id.length === 0) {
+                        $('#users').html(waitShopkeeper());
+                        checkNewMessage();
+                    } else {
+                        getUser(receiver_id, sender_id, user => {
+                            $('#users').html(user);
+                        });
+                        clearInterval(timer);
+                    }
                 }
             }, 1000);
         })
