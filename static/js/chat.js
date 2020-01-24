@@ -81,6 +81,12 @@ function getUsers(senderId, callback) {
     });
 }
 
+function getUser(senderId, receiverId, callback) {
+    return $.get('/api/users/'+receiverId, function (receiverData) {
+        callback(userDiv(senderId, receiverId, receiverData[0].username, receiverData[0].online));
+    });
+}
+
 function waitShopkeeper() {
     return `<a href="#" class="collection-item row">
                     <div class="col s12" style="text-align: center;">
@@ -92,10 +98,7 @@ function waitShopkeeper() {
 function checkNewMessage() {
     $.get('/api/messages/' + receiver_id, function (data) {
         if (data.length !== 0) {
-            window.location.href = '/chat/' + data[0].sender + '/' + data[0].receiver
-            // $.get('/chat/' + data[0].sender + '/' + data[0].receiver);
+            window.location.href = '/chat/' + data[0].receiver + '/' + data[0].sender
         }
     });
 }
-
-// /chat/${senderId}/${receiverId}

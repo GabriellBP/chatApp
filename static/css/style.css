@@ -1,9 +1,10 @@
-/*My style page*/
+/*---My style page---*/
 
 /* label focus color */
 .input-field input[type=text]:focus + label {
     color: #000; !important;
 }
+
 /* label underline focus color */
 .input-field input[type=text]:focus {
     border-bottom: 1px solid #000; !important;
@@ -13,4 +14,35 @@
 .input-field input[type=password]:focus {
     border-bottom: 1px solid #000; !important;
     box-shadow: 0 1px 0 0 #000; !important;
+}
+
+
+/* tooltip */
+[data-md-tooltip] {
+  position: relative;
+}
+
+[data-md-tooltip]:before {
+    content: attr(data-md-tooltip);
+    position: absolute;
+    bottom: -50%;
+    left: 50%;
+    padding: 10px 8px;
+    min-height: 36px;
+    line-height: 120%;
+    transform: translateX(-50%) scale(0);
+    transition: transform 0.3s ease-in-out;
+    transform-origin: top;
+    background: #616161e6;
+    color: white;
+    border-radius: 2px;
+    font-size: 1rem;
+    font-family: Roboto,sans-serif;
+    font-weight: 400;
+    z-index: 10000;
+    text-align: center;
+}
+
+[data-md-tooltip]:hover:before {
+  transform: translateX(-50%) scale(1);
 }

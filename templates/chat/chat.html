@@ -5,6 +5,16 @@
             <a href="{% url 'chats' %}" class="brand-logo">Chat</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
+                    {% if not is_waiting %}
+                        {% if is_customer %}
+                            <a href="/chat"><i class="material-icons" data-md-tooltip="Wait other Shopkeeper">replay</i></a>
+                        {% else %}
+                            <a href="/chat"><i class="material-icons" data-md-tooltip="Get other Customer">replay</i></a>
+                        {% endif %}
+                    {% endif %}
+                </li>
+                <li></li>
+                <li>
                     {% if is_customer %}
                     <a href="">{{ request.user.username }} <span
                             class="badge light-blue white-text">Customer</span></a>
@@ -39,7 +49,7 @@
                         <div class="row">
                             <div class="col s11">
                                 <div class="input-field">
-                                    <input id="id_message" name="message" type="text" placeholder="Type your message..">
+                                    <input id="id_message" name="message" type="text" style="border-bottom: 1px solid #64b5f6 !important;" placeholder="Type your message..">
                                 </div>
                             </div>
                             <div class="col s1" style="line-height: 80px">
@@ -69,7 +79,7 @@
                 message.val('');
             });
 
-            setInterval(() => {
+            const timer = setInterval(() => {
                 if ( is_customer !== 'True') {
                     getUsers({{ request.user.id }}, doc => {
                         let list = '';
