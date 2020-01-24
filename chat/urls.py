@@ -18,7 +18,7 @@ urlpatterns = [
 
     # API:
     # URL to send and receive messages
-    path('api/messages/<int:receiver>', views.message_list, name='message-detail'),
+    path('api/messages/<int:receiver>', views.message_list, name='message-check'),
     # URL form : "/api/messages/1/2"
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),  # For GET request.
     # URL form : "/api/messages/"

@@ -52,6 +52,7 @@ def message_list(request, sender=None, receiver=None):
         for message in messages:
             message.is_read = True
             message.save()
+        print('------>', serializer.data)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
@@ -97,11 +98,13 @@ def chat_view(request):
     if not request.user.is_authenticated:
         return redirect('index')
     if request.method == "GET":
+        print('será que tá chegando aqui?')
         return render(request, 'chat/chat.html',
                       {
                           'users': User.objects.exclude(
                               username=request.user.username),
-                          'is_customer': UserProfile.objects.get(user=User.objects.get(id=request.user.id)).is_customer
+                          'is_customer': UserProfile.objects.get(user=User.objects.get(id=request.user.id)).is_customer,
+                          'is_waiting' : True
                       })  # Returning context for all users except the current logged-in user
 
 
@@ -116,6 +119,8 @@ def message_view(request, sender, receiver):
     if request.method == "GET":
         return render(request, "chat/messages.html",
                       {'users': User.objects.exclude(username=request.user.username),  # List of users
+                       'is_customer': UserProfile.objects.get(user=User.objects.get(id=request.user.id)).is_customer,
+                       'is_waiting': False,
                        'receiver': User.objects.get(id=receiver),  # Receiver context user object for using in template
                        'messages': Message.objects.filter(sender_id=sender, receiver_id=receiver) |
                                    Message.objects.filter(sender_id=receiver,

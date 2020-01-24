@@ -22,7 +22,7 @@ class Message(models.Model):
 def set_customer():
     qtt_is_customer = len(UserProfile.objects.filter(is_customer=True))
     qtt_is_not_customer = len(UserProfile.objects.filter(is_customer=False))
-    print(qtt_is_customer, qtt_is_not_customer)
+
     if qtt_is_customer <= qtt_is_not_customer:
         return True
     else:
