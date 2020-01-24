@@ -80,7 +80,7 @@
             });
 
             const timer = setInterval(() => {
-                if ( is_customer !== 'True') {
+                if ( is_customer !== 'True' && sender_id.length === 0) {
                     getUsers({{ request.user.id }}, doc => {
                         let list = '';
                         doc.map(userItem => {
@@ -88,16 +88,14 @@
                         });
                         $('#users').html(list);
                     });
-                } else { // is customer
-                    if (sender_id.length === 0) {
-                        $('#users').html(waitShopkeeper());
-                        checkNewMessage();
-                    } else {
-                        getUser(receiver_id, sender_id, user => {
-                            $('#users').html(user);
-                        });
-                        clearInterval(timer);
-                    }
+                } else if (sender_id.length === 0) { // is customer
+                    $('#users').html(waitShopkeeper());
+                    checkNewMessage();
+                } else {
+                    getUser(receiver_id, sender_id, user => {
+                        $('#users').html(user);
+                    });
+                    clearInterval(timer);
                 }
             }, 1000);
         })

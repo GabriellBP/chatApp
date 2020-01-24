@@ -52,7 +52,6 @@ def message_list(request, sender=None, receiver=None):
         for message in messages:
             message.is_read = True
             message.save()
-        print('------>', serializer.data)
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
