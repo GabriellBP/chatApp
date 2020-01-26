@@ -43,19 +43,15 @@ def message_list(request, sender=None, receiver=None):
     List all required messages, or create a new message.
     """
     if request.method == 'GET':
-        if sender is None and receiver is None:
-            message = Message.objects.latest('timestamp')
-            serializer = CheckMessageSerializer(message, many=False, context={'request': request})
+        if sender is None:
+            messages = Message.objects.filter(receiver_id=receiver, is_read=False)
+            serializer = CheckMessageSerializer(messages, many=True, context={'request': request})
         else:
-            if sender is None:
-                messages = Message.objects.filter(receiver_id=receiver, is_read=False)
-                serializer = CheckMessageSerializer(messages, many=True, context={'request': request})
-            else:
-                messages = Message.objects.filter(receiver_id=receiver, sender_id=sender, is_read=False)
-                serializer = MessageSerializer(messages, many=True, context={'request': request})
-            for message in messages:
-                message.is_read = True
-                message.save()
+            messages = Message.objects.filter(receiver_id=receiver, sender_id=sender, is_read=False)
+            serializer = MessageSerializer(messages, many=True, context={'request': request})
+        for message in messages:
+            message.is_read = True
+            message.save()
         return JsonResponse(serializer.data, safe=False)
     elif request.method == 'POST':
         data = JSONParser().parse(request)
@@ -64,6 +60,28 @@ def message_list(request, sender=None, receiver=None):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def last_message(request, sender, receiver):
+    if request.method == 'GET':
+        if sender is not None and receiver is not None:
+            message1 = Message.objects.filter(sender_id=sender, receiver_id=receiver).last()
+            message2 = Message.objects.filter(sender_id=receiver, receiver_id=sender).last()
+            if message1 is None and message2 is not None:
+                message = message2
+            elif message1 is not None and message2 is None:
+                message = message1
+            elif message1 is not None and message2 is not None:
+                if message1.timestamp > message2.timestamp:
+                    message = message1
+                else:
+                    message = message2
+            else:
+                message = None
+            serializer = CheckMessageSerializer(message, many=False, context={'request': request})
+            return JsonResponse(serializer.data, safe=False)
+        return JsonResponse('{"error": "Error"}', status=400)
 
 
 # Login page
@@ -101,13 +119,12 @@ def chat_view(request):
     if not request.user.is_authenticated:
         return redirect('index')
     if request.method == "GET":
-        print('será que tá chegando aqui?')
         return render(request, 'chat/chat.html',
                       {
                           'users': User.objects.exclude(
                               username=request.user.username),
                           'is_customer': UserProfile.objects.get(user=User.objects.get(id=request.user.id)).is_customer,
-                          'is_waiting' : True
+                          'is_waiting': True
                       })  # Returning context for all users except the current logged-in user
 
 

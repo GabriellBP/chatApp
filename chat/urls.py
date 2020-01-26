@@ -21,10 +21,12 @@ urlpatterns = [
     path('api/messages/<int:receiver>', views.message_list, name='message-check'),
     # URL form : "/api/messages/1/2" - URL to send and receive messages
     path('api/messages/<int:sender>/<int:receiver>', views.message_list, name='message-detail'),  # For GET request.
-    # URL form : "/api/messages/" - For POST or to get last message sender id
-    path('api/messages/', views.message_list, name='message-list'),
-    # URL form "/api/users/1"
+    # URL from : "/api/messages/last/1/2" - URL to get last message sender id
+    path('api/messages/last/<int:sender>/<int:receiver>', views.last_message, name='last-message'),
+    # URL form : "/api/messages/" - For POST
+    path('api/messages/', views.message_list, name='message-list'),  # POST
+    # URL form : "/api/users/1"
     path('api/users/<int:pk>', views.user_list, name='user-detail'),      # GET request for user with id
-    # URL form "/api/users/"
+    # URL form : "/api/users/"
     path('api/users/', views.user_list, name='user-list'),    # POST for new user and GET for all users list
 ]

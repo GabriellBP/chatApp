@@ -46,7 +46,7 @@ function receive() {
 
 function checkLastMessage() {
     let inputMessage = $('#id_message');
-    $.get('/api/messages/', function (data) {
+    $.get('/api/messages/last/' + sender_id + '/' + receiver_id, function (data) {
        if (data.length !== 0) {
             if (data.sender === parseInt(receiver_id)) {
                 if (!inputMessage.is(':disabled')) {
