@@ -1,0 +1,281 @@
+{
+  "peça": {
+    "calça": {
+      "tecido": [
+        "lycra",
+        "jeans",
+        "algodão",
+        "seda",
+        "couro"
+      ],
+      "tamanho": [
+        "PP",
+        "P",
+        "M",
+        "G",
+        "GG",
+        "XG"
+      ],
+      "cor": [
+        "listrada",
+        "floral",
+        "xadrez",
+        "estampada",
+        "camuflada",
+        "zebra",
+        "amarelo",
+        "azul",
+        "vermelho",
+        "verde",
+        "roxa",
+        "rosa",
+        "preta",
+        "branca",
+        "bege",
+        "laranja",
+        "marrom",
+        "nude"
+      ],
+      "modelagem": [
+        "regular",
+        "slim",
+        "skinny",
+        "reta"
+      ],
+      "cintura": [
+        "alta",
+        "intermediária",
+        "baixa"
+      ]
+    },
+    "saia": {
+      "tecido": [
+        "lycra",
+        "jeans",
+        "algodão",
+        "seda",
+        "couro"
+      ],
+      "tamanho": [
+        "PP",
+        "P",
+        "M",
+        "G",
+        "GG",
+        "XG"
+      ],
+      "cor": [
+        "listrada",
+        "floral",
+        "xadrez",
+        "estampada",
+        "camuflada",
+        "zebra",
+        "amarelo",
+        "azul",
+        "vermelho",
+        "verde",
+        "roxa",
+        "rosa",
+        "preta",
+        "branca",
+        "bege",
+        "laranja",
+        "marrom",
+        "nude"
+      ],
+      "modelagem": [
+        "regular",
+        "slim",
+        "justo",
+        "reta",
+        "curta",
+        "evase"
+      ],
+      "cintura": [
+        "alta",
+        "intermediária",
+        "baixa"
+      ]
+    },
+    "vestido": {
+      "tecido": [
+        "lycra",
+        "jeans",
+        "algodão",
+        "seda",
+        "couro"
+      ],
+      "tamanho": [
+        "PP",
+        "P",
+        "M",
+        "G",
+        "GG",
+        "XG"
+      ],
+      "cor": [
+        "listrada",
+        "floral",
+        "xadrez",
+        "estampada",
+        "camuflada",
+        "zebra",
+        "amarelo",
+        "azul",
+        "vermelho",
+        "verde",
+        "roxa",
+        "rosa",
+        "preta",
+        "branca",
+        "bege",
+        "laranja",
+        "marrom",
+        "nude"
+      ],
+      "modelagem": [
+        "regular",
+        "slim",
+        "justo",
+        "reta",
+        "transpassada",
+        "evase",
+        "curto",
+        "longo"
+      ],
+      "cintura": [
+        "alta",
+        "intermediária",
+        "baixa"
+      ]
+    },
+    "blusa": {
+      "tecido": [
+        "lycra",
+        "jeans",
+        "algodão",
+        "seda",
+        "couro"
+      ],
+      "tamanho": [
+        "PP",
+        "P",
+        "M",
+        "G",
+        "GG",
+        "XG"
+      ],
+      "cor": [
+        "listrada",
+        "floral",
+        "xadrez",
+        "estampada",
+        "camuflada",
+        "zebra",
+        "amarelo",
+        "azul",
+        "vermelho",
+        "verde",
+        "roxa",
+        "rosa",
+        "preta",
+        "branca",
+        "bege",
+        "laranja",
+        "marrom",
+        "nude"
+      ],
+      "modelagem": [
+        "regata",
+        "manga curta",
+        "manga longa",
+        "regular",
+        "slim",
+        "polo"
+      ]
+    },
+    "camisa": {
+      "tecido": [
+        "jeans",
+        "algodão",
+        "seda",
+        "couro"
+      ],
+      "tamanho": [
+        "PP",
+        "P",
+        "M",
+        "G",
+        "GG",
+        "XG"
+      ],
+      "cor": [
+        "listrada",
+        "floral",
+        "xadrez",
+        "estampada",
+        "camuflada",
+        "zebra",
+        "amarelo",
+        "azul",
+        "vermelho",
+        "verde",
+        "roxa",
+        "rosa",
+        "preta",
+        "branca",
+        "bege",
+        "laranja",
+        "marrom",
+        "nude"
+      ],
+      "modelagem": [
+        "manga curta",
+        "manga longa",
+        "regular",
+        "slim"
+      ]
+    },
+    "moletom": {
+      "tecido": [
+        "jeans",
+        "algodão",
+        "seda",
+        "couro"
+      ],
+      "tamanho": [
+        "PP",
+        "P",
+        "M",
+        "G",
+        "GG",
+        "XG"
+      ],
+      "cor": [
+        "listrada",
+        "floral",
+        "xadrez",
+        "estampada",
+        "camuflada",
+        "zebra",
+        "amarelo",
+        "azul",
+        "vermelho",
+        "verde",
+        "roxa",
+        "rosa",
+        "preta",
+        "branca",
+        "bege",
+        "laranja",
+        "marrom",
+        "nude"
+      ],
+      "modelagem": [
+        "aberto",
+        "fechado"
+      ]
+    }
+  }
+}
