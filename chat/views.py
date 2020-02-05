@@ -6,6 +6,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from chat.models import Message, UserProfile
 from chat.serializers import MessageSerializer, UserSerializer, CheckMessageSerializer
+import json
+from random import *
+import copy
 
 
 # Users View
@@ -32,7 +35,7 @@ def user_list(request, pk=None):
             user = User.objects.create_user(username=data['username'], password=data['password'])
             UserProfile.objects.create(user=user)
             return JsonResponse(data, status=201)
-        except Exception:
+        except (ValueError, Exception):
             return JsonResponse({'error': "Something went wrong"}, status=400)
 
 
@@ -145,3 +148,27 @@ def message_view(request, sender, receiver):
                        'messages': Message.objects.filter(sender_id=sender, receiver_id=receiver) |
                                    Message.objects.filter(sender_id=receiver,
                                                           receiver_id=sender)})  # Return context with message objects where users are either sender or receiver.
+
+
+# View to get a random stock
+def get_stock(request, is_customer=1):
+    try:
+        with open('./static/docs/stock.json', 'rb') as json_file:
+            data = json.load(json_file, encoding='utf-8')
+            backup = copy.deepcopy(data)
+        for peca in backup['peça'].keys():
+            if randint(0, 1) == 1:
+                del data['peça'][peca]
+            else:
+                for key in backup['peça'][peca].keys():
+                    item_len = len(backup['peça'][peca][key])
+                    for i in range(item_len):
+                        if i >= len(data['peça'][peca][key]):
+                            break
+                        if randint(0, 1) == 1:
+                            data['peça'][peca][key].pop(i)
+        return JsonResponse(data, status=200)
+    except ValueError as e:
+        print(str(e))
+        return JsonResponse({'error': "Something went wrong"}, status=400)
+

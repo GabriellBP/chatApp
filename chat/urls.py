@@ -25,6 +25,8 @@ urlpatterns = [
     path('api/messages/last/<int:sender>/<int:receiver>', views.last_message, name='last-message'),
     # URL form : "/api/messages/" - For POST
     path('api/messages/', views.message_list, name='message-list'),  # POST
+    # URL form: "/api/stock/" - URL to get stock data
+    path('api/stock/<int:is_customer>', views.get_stock, name="get-stock"),
     # URL form : "/api/users/1"
     path('api/users/<int:pk>', views.user_list, name='user-detail'),      # GET request for user with id
     # URL form : "/api/users/"
