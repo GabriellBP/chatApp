@@ -15,7 +15,7 @@ const userDiv = (senderId, receiverId, name, online) =>
                     <span class="title" style="font-weight: bolder">${name}</span>
                     <span style="color: ${online ? 'green' : 'red'}; float: right">${online ? 'online' : 'offline'}</span>
                     </div>
-                </a>`)
+                </a>`);
 
 /* Send takes three args: sender, receiver, message. sender & receiver are ids of users, and message is the text to be sent. */
 function send(sender, receiver, message) {
@@ -117,5 +117,54 @@ function checkNewMessage() {
         if (data.length !== 0) {
             window.location.href = '/chat/' + data[0].receiver + '/' + data[0].sender
         }
+    });
+}
+
+const collapsibleDiv = (header, content) =>
+    (`<ul class="collapsible">
+          <li>
+              <div class="collapsible-header" >
+                <i class="material-icons">check</i>
+                ${header}
+              </div>
+              ${content}
+          </li>
+      </ul>`);
+
+const collapsibleDivWithBody = (header, content) =>
+    (`<ul class="collapsible">
+          <li>
+              <div class="collapsible-header" style="font-weight: bold;">
+                    <i class="material-icons">shopping_cart</i>
+                ${header}
+              </div>
+              <div class="collapsible-body body">
+                ${content}
+              </div>
+          </li>
+      </ul>`);
+
+const collapsibleBodyDiv = (content) =>
+    (`<div class="collapsible-body" style="text-align: right;">
+          ${content}
+      </div>`);
+
+function getStock(isCustomer, callback) {
+    let value = isCustomer === 'True' ? 1 : 0;
+    return $.get('/api/stock/' + value , function (data) {
+        console.log(data);
+        let stockContent = '';
+        for (let [key, item] of Object.entries(data['peça'])) {
+            let content = '';
+            for (let [k, v] of Object.entries(item)) {
+                let value = '';
+                for (let tp of v) {
+                    value += collapsibleBodyDiv(tp);
+                }
+                content += collapsibleDiv(k, value);
+            }
+            stockContent += collapsibleDivWithBody(key, content);
+        }
+        callback(stockContent);
     });
 }

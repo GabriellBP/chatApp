@@ -23,7 +23,7 @@
 
 /* tooltip */
 [data-md-tooltip] {
-  position: relative;
+    position: relative;
 }
 
 [data-md-tooltip]:before {
@@ -48,5 +48,25 @@
 }
 
 [data-md-tooltip]:hover:before {
-  transform: translateX(-50%) scale(1);
+    transform: translateX(-50%) scale(1);
+}
+
+/* stock */
+div.header {
+    text-align: center;
+    background-color: #eeeeee;
+    font-weight: bold;
+}
+
+div.header span {
+    width: 100%;
+    text-align: center;
+}
+
+div.body {
+    padding: 0 !important;
+}
+
+div.body ul {
+    margin: 0 !important;
 }

@@ -9,18 +9,19 @@
                         {% if is_customer %}
                             <a href="/chat"><i class="material-icons" data-md-tooltip="Wait other Shopkeeper">replay</i></a>
                         {% else %}
-                            <a href="/chat"><i class="material-icons" data-md-tooltip="Get other Customer">replay</i></a>
+                            <a href="/chat"><i class="material-icons"
+                                               data-md-tooltip="Get other Customer">replay</i></a>
                         {% endif %}
                     {% endif %}
                 </li>
                 <li></li>
                 <li>
                     {% if is_customer %}
-                    <a href="">{{ request.user.username }} <span
-                            class="badge light-blue white-text">Customer</span></a>
+                        <a href="">{{ request.user.username }} <span
+                                class="badge light-blue white-text">Customer</span></a>
                     {% else %}
-                    <a href="">{{ request.user.username }} <span
-                            class="badge light-green white-text">Shopkeeper</span></a>
+                        <a href="">{{ request.user.username }} <span
+                                class="badge light-green white-text">Shopkeeper</span></a>
                     {% endif %}
                 </li>
                 <li><a href="{% url 'logout' %}"><i class="material-icons">power_settings_new</i></a></li>
@@ -35,6 +36,20 @@
 
                     </div>
                 </div>
+                {% if not is_customer %}
+                    <div>
+                        <ul class="collapsible">
+                            <li>
+                                <div class="collapsible-header header">
+                                    <span>Stock</span>
+                                </div>
+                                <div class="body collapsible-body" id="stockContent">
+                                        Olá
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                {% endif %}
             </div>
             <div class="col s9">
                 <div class="card">
@@ -81,7 +96,7 @@
             });
 
             const timer = setInterval(() => {
-                if ( is_customer !== 'True' && sender_id.length === 0) {
+                if (is_customer !== 'True' && sender_id.length === 0) {
                     getUsers({{ request.user.id }}, doc => {
                         let list = '';
                         doc.map(userItem => {
@@ -99,6 +114,18 @@
                     clearInterval(timer);
                 }
             }, 1000);
-        })
+
+        });
+
+        $(function () {
+           getStock(is_customer, doc => {
+                $('#stockContent').html(doc);
+                $(document).ready(function(){
+                    $('.collapsible').collapsible();
+                  });
+            });
+
+        });
+
     </script>
 {% endblock %}
