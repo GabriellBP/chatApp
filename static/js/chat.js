@@ -50,7 +50,7 @@ function checkLastMessage() {
        if (data.length !== 0) {
             if (data.sender === parseInt(receiver_id)) {
                 if (!inputMessage.is(':disabled')) {
-                    inputMessage.prop('disabled', true);;
+                    inputMessage.prop('disabled', true);
                 }
             } else {
                 if (inputMessage.is(':disabled')) {
@@ -152,7 +152,6 @@ const collapsibleBodyDiv = (content) =>
 function getStock(isCustomer, callback) {
     let value = isCustomer === 'True' ? 1 : 0;
     return $.get('/api/stock/' + value , function (data) {
-        console.log(data);
         let stockContent = '';
         for (let [key, item] of Object.entries(data['peça'])) {
             let content = '';

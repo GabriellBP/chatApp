@@ -36,15 +36,20 @@
 
                     </div>
                 </div>
-                {% if not is_customer %}
+                {% if not is_waiting %}
                     <div>
                         <ul class="collapsible">
                             <li>
-                                <div class="collapsible-header header">
-                                    <span>Stock</span>
-                                </div>
+                                {% if is_customer %}
+                                    <div class="collapsible-header header">
+                                        <span>Interests</span>
+                                    </div>
+                                {% else %}
+                                    <div class="collapsible-header header">
+                                        <span>Stock</span>
+                                    </div>
+                                {% endif %}
                                 <div class="body collapsible-body" id="stockContent">
-                                        Olá
                                 </div>
                             </li>
                         </ul>

@@ -17,6 +17,8 @@ def user_list(request, pk=None):
     """
     List all users, an unique user or create a new one.
     """
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': "Not Authenticated"}, status=401)
     if request.method == 'GET':
         if pk:  # If PrimaryKey (id) of the user is specified in the url
             users = User.objects.filter(id=pk)  # Select only that particular user
@@ -45,6 +47,8 @@ def message_list(request, sender=None, receiver=None):
     """
     List all required messages, or create a new message.
     """
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': "Not Authenticated"}, status=401)
     if request.method == 'GET':
         if sender is None:
             messages = Message.objects.filter(receiver_id=receiver, is_read=False)
@@ -67,6 +71,8 @@ def message_list(request, sender=None, receiver=None):
 
 @csrf_exempt
 def last_message(request, sender, receiver):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': "Not Authenticated"}, status=401)
     if request.method == 'GET':
         if sender is not None and receiver is not None:
             message1 = Message.objects.filter(sender_id=sender, receiver_id=receiver).last()
@@ -152,6 +158,8 @@ def message_view(request, sender, receiver):
 
 # View to get a random stock
 def get_stock(request, is_customer=1):
+    if not request.user.is_authenticated:
+        return JsonResponse({'error': "Not Authenticated"}, status=401)
     try:
         with open('./static/docs/stock.json', 'rb') as json_file:
             data = json.load(json_file, encoding='utf-8')
