@@ -17,8 +17,6 @@ def user_list(request, pk=None):
     """
     List all users, an unique user or create a new one.
     """
-    if not request.user.is_authenticated:
-        return JsonResponse({'error': "Not Authenticated"}, status=401)
     if request.method == 'GET':
         if pk:  # If PrimaryKey (id) of the user is specified in the url
             users = User.objects.filter(id=pk)  # Select only that particular user
