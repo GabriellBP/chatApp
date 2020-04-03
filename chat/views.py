@@ -18,10 +18,15 @@ def user_list(request, pk=None):
     List all users, an unique user or create a new one.
     """
     if request.method == 'GET':
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': "Not Authenticated"}, status=401)
         if pk:  # If PrimaryKey (id) of the user is specified in the url
             users = User.objects.filter(id=pk)  # Select only that particular user
         else:
-            users = User.objects.all().order_by('username').reverse()  # Else get all user list
+            if request.user.is_superuser:
+                users = User.objects.all().order_by('username').reverse()  # Else get all user list
+            else:
+                return JsonResponse({'error': "Not Authenticated"}, status=401)
         serializer = UserSerializer(users, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)  # Return serialized data
     elif request.method == 'POST':
