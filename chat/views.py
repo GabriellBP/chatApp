@@ -1,3 +1,5 @@
+from _ast import alias
+
 from django.contrib.auth import authenticate, login  # Django's inbuilt authentication methods
 from django.contrib.auth.models import User
 from django.http.response import JsonResponse, HttpResponse
@@ -182,4 +184,31 @@ def get_stock(request, is_customer=1):
     except ValueError as e:
         print(str(e))
         return JsonResponse({'error': "Something went wrong"}, status=400)
+
+
+def get_all_conversations(request):
+    if request.method == 'GET':
+        if request.user.is_superuser:
+            users = User.objects.all().order_by('username').reverse()
+            users_done = []
+            all_conversations = []
+            for user in users:
+                partners = []
+                partners.extend(list(Message.objects.filter(sender=user).values_list('receiver', flat=True)))
+                partners.extend(list(Message.objects.filter(receiver=user).values_list('sender', flat=True)))
+                partners = set(partners)
+                for partner in partners:
+                    if partner in users_done:
+                        continue
+                    messages = []
+                    messages.extend(MessageSerializer(Message.objects.filter(sender=user, receiver=partner), many=True).data)
+                    messages.extend(MessageSerializer(Message.objects.filter(receiver=user, sender=partner), many=True).data)
+                    messages = sorted(messages, key=lambda k: k['timestamp'])
+                    all_conversations.append(messages)
+                users_done.append(user)
+            with open('messages.txt', 'w') as outfile:
+                json.dump(all_conversations, outfile)
+            return JsonResponse(all_conversations, status=200, safe=False)
+        else:
+            return JsonResponse({'error': "Not Authenticated"}, status=401)
 
