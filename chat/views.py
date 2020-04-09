@@ -207,8 +207,8 @@ def get_all_conversations(request):
                     all_conversations.append(messages)
                 users_done.append(user)
             with open('messages.txt', 'w') as outfile:
-                json.dump(all_conversations, outfile)
-            return JsonResponse(all_conversations, status=200, safe=False)
+                json.dump(all_conversations, outfile, ensure_ascii=False)
+            return JsonResponse(all_conversations, status=200, safe=False, json_dumps_params={'ensure_ascii': False})
         else:
             return JsonResponse({'error': "Not Authenticated"}, status=401)
 
