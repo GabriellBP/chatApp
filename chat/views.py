@@ -190,7 +190,7 @@ def get_all_conversations(request):
     if request.method == 'GET':
         if request.user.is_superuser:
             users = User.objects.all().order_by('username').reverse()
-            users_done = []
+            done_conversations = []
             all_conversations = []
             for user in users:
                 partners = []
@@ -198,14 +198,14 @@ def get_all_conversations(request):
                 partners.extend(list(Message.objects.filter(receiver=user).values_list('sender', flat=True)))
                 partners = set(partners)
                 for partner in partners:
-                    if partner in users_done:
+                    if (user.id, partner) in done_conversations or (partner, user.id) in done_conversations:
                         continue
                     messages = []
                     messages.extend(MessageSerializer(Message.objects.filter(sender=user, receiver=partner), many=True).data)
                     messages.extend(MessageSerializer(Message.objects.filter(receiver=user, sender=partner), many=True).data)
                     messages = sorted(messages, key=lambda k: k['timestamp'])
                     all_conversations.append(messages)
-                users_done.append(user)
+                    done_conversations.append((user.id, partner))
             with open('messages.txt', 'w') as outfile:
                 json.dump(all_conversations, outfile, ensure_ascii=False)
             return JsonResponse(all_conversations, status=200, safe=False, json_dumps_params={'ensure_ascii': False})
