@@ -25,10 +25,7 @@ def user_list(request, pk=None):
         if pk:  # If PrimaryKey (id) of the user is specified in the url
             users = User.objects.filter(id=pk)  # Select only that particular user
         else:
-            if request.user.is_superuser:
-                users = User.objects.all().order_by('username').reverse()  # Else get all user list
-            else:
-                return JsonResponse({'error': "Not Authenticated"}, status=401)
+            users = User.objects.all().order_by('username').reverse()  # Else get all user list
         serializer = UserSerializer(users, many=True, context={'request': request})
         return JsonResponse(serializer.data, safe=False)  # Return serialized data
     elif request.method == 'POST':
