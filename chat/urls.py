@@ -31,5 +31,5 @@ urlpatterns = [
     path('api/users/<int:pk>', views.user_list, name='user-detail'),      # GET request for user with id
     # URL form : "/api/users/"
     path('api/users/', views.user_list, name='user-list'),    # POST for new user and GET for all users list
-    path('api/all_conversations/', views.get_all_conversations, name='all-conversations'),    # POST for new user and GET for all users list
+    path('api/all_conversations/', views.get_all_conversations, name='all-conversations'),  # GET
 ]
