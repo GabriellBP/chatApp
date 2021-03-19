@@ -1,7 +1,7 @@
 asgiref==3.2.3
 Django==3.0.7
 django-widget-tweaks==1.4.5
-djangorestframework==3.10.3
+djangorestframework==3.11.2
 python-memcached==1.59
 pytz==2019.3
 six==1.13.0
